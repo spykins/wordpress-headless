@@ -1,0 +1,42 @@
+version: '3.9'
+services:
+  # sabilinkmysql:
+  #   image: mysql:5.6.51
+  #   command: --default_authentication_plugin=mysql_native_password
+  #   volumes:
+  #     - /Users/spykins/Desktop/Sabilink/tutorials/wordpress/mysql/data:/var/lib/mysql
+  #   networks:
+  #     - spy-net
+  #   ports:
+  #     - "3306:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: sabi_password
+  #     MYSQL_DATABASE: sabilink_public
+  #     MYSQL_USER: sabilink
+  #     MYSQL_PASSWORD: sabi_p
+  #     MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+  wordpress:
+    # depends_on:
+    #   - sabilinkmysql
+    build: 
+      context: ./wordpress-dockerfile
+    volumes:
+      - ./wp-content:/var/www/html/wp-content
+    networks:
+      - spy-net
+    ports:
+      - "8000:80"
+    # restart: always
+    environment:
+      WORDPRESS_DB_HOST: sabilinkmysql:3306
+      WORDPRESS_DB_USER: sabilink
+      WORDPRESS_DB_PASSWORD: sabi_p
+      WORDPRESS_DB_NAME: sabilink_public
+
+volumes:
+  db_data:
+
+networks:
+  spy-net:
+    external: true      
+
